@@ -1,0 +1,11 @@
+{
+  "name": "geekgazette-server",
+  "version": "1.0.0",
+  "description": "Server side for the geek gazzete blog site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@kiptanuiBoaz",
+  "license": "ISC"
+}
