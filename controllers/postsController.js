@@ -95,9 +95,9 @@ const getPost = async (req, res) => {
 
 //export the fns
 module.exports = {
-    getPost,
+    getPosts,
     deletePost,
     getPost,
     updatePost,
-    createNewPost
+    createNewPost,
 }
