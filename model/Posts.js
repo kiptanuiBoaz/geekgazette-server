@@ -28,6 +28,7 @@ const postSchema = new Schema({
         coffee: []
     },
     comments: [{
+        commentId: String,
         userId: Number,
         date: String,
         text: String,
