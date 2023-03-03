@@ -53,6 +53,7 @@ app.use("/subdir", express.static(path.join(__dirname,'/public')));
 // app.use(verifyJWT);
 app.use("/posts", require("./routes/api/posts.js"));
 app.use("/likes", require("./routes/api/likes.js"));
+app.use("/comments", require("./routes/api/comments.js"))
 // app.use("/users", require("./routes/api/users.js"));
 
 //applies to all http methods that  made it this far without bieng served

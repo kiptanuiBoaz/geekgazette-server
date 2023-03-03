@@ -1,18 +1,18 @@
-const Post = require("../model/Post"); //Post model
+const Posts = require("../model/Posts"); //Post model
 
 const createNewComment = async (req, res) => {
     //check if id is provided
-    if (!req?.body?.id) return res.status(400).json({ "message": "id paramater is required" });
+    if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
 
-    const { userId, date, commentId, text } = req.body;
+    const { userId, date, text, postId } = req.body;
     //grab the post with the sent id from db
-    const post = await Post.findOne({ _id: id }).exec();
+    const post = await Posts.findOne({ _id: postId }).exec();
 
-    if (!post) return res.status(204).json({ "message": `No post matches ID ${id}` });
+    if (!post) return res.status(204).json({ "message": `No post matches ID ${postId}` });
 
     try {
         //spread the existing comment in the existing comments array
-        post.comments = [...post.comments, { userId, date, text, commentId }];
+        post.comments = [...post.comments, { userId, date, text }];
 
         //add updated post to db
         const result = await post.save();
@@ -26,16 +26,25 @@ const createNewComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
     //check if id is provided
-    if (!req?.body?.id) return res.status(400).json({ "message": "id paramater is required" });
+    if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
+    const { postId, commentId } = req.body;
 
-    //grab the post with the sent id from db
-    const post = await Post.findOne({ _id: req.body.id }).exec();
-    
-    post.comments = post.comments.filter(comment => comment.commentId !== req.body.commentId);
-    const result = await post.save();
+    try {
+        //grab the post with the sent id from db
+        const post = await Posts.findOne({ _id: postId }).exec();
+        if (!post) {
+            return res.status(404).json({ message: `Post with id ${postId} not found`});
+        }
+        console.log(post)
 
-    return res.status(200).json(result);
+        const newComments = post.comments.filter(comment => comment._id !== commentId);
+        post.comments = newComments
+        const result = await post.save();
 
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-module.exports = { createNewComment, deleteComment};
+module.exports = { createNewComment, deleteComment };
