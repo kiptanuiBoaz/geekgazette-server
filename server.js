@@ -28,7 +28,7 @@ app.use(cors());
 // app.use(cors(corsOptions));
 
 // middleware function provided by the Express.js to handle formdata
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }))
 
 //built in middleware for json data
 app.use(express.json());
@@ -37,17 +37,18 @@ app.use(express.json());
 // app.use(cookieParser());
 
 //middleware function provided by the Express.js framework that is used to serve static files from a specific folder
-app.use("/",express.static(path.join(__dirname,'/public')));
+app.use("/", express.static(path.join(__dirname, '/public')));
 //pass static files from the subdir
-app.use("/subdir", express.static(path.join(__dirname,'/public')));
+app.use("/subdir", express.static(path.join(__dirname, '/public')));
 
 
 //routes
 // app.use("/",require("./routes/root.js"));
-app.use("/register",require("./routes/register.js"));
-app.use("/login",require("./routes/login.js"));
+app.use("/register", require("./routes/register.js"));
+app.use("/login", require("./routes/login.js"));
+app.use("/logout", require("./routes/logout.js"));
 // app.use("/refresh",require("./routes/refresh.js"));
-// app.use("/logout",require("./routes/logout.js"));b
+
 
 //protected routes
 // app.use(verifyJWT);
@@ -55,23 +56,23 @@ app.use("/posts", require("./routes/api/posts.js"));
 app.use("/likes", require("./routes/api/likes.js"));
 app.use("/comments", require("./routes/api/comments.js"))
 app.use("/reactions", require("./routes/api/reactions.js"));
-// app.use("/users", require("./routes/api/users.js"));
+app.use("/users", require("./routes/api/users.js"));
 
 //applies to all http methods that  made it this far without bieng served
-app.all("*", (req, res)=>{
+app.all("*", (req, res) => {
     res.status(404);
 
-    if(req.accepts("html")){
+    if (req.accepts("html")) {
         //send html if the client headers accepts .html
         res.sendFile(path.join(__dirname, "views", "404.html"));
-    }else if(req.accepts("json")){
+    } else if (req.accepts("json")) {
         //send json if the client headers accepts json
-        res.json({error: "404 Not Found"})
-    }else{
-          //send text if the client headers accepts text
+        res.json({ error: "404 Not Found" })
+    } else {
+        //send text if the client headers accepts text
         res.type(txt).send("404 Not Found")
     }
-  
+
 })
 
 
@@ -80,7 +81,7 @@ app.all("*", (req, res)=>{
 // app.use(errorHandler)
 
 //listen to mongoose connected  event
-mongoose.connection.once("open",()=>{
+mongoose.connection.once("open", () => {
     console.log("Connected to MongoDB");
     //listen on server port after conncetion is succesful
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
