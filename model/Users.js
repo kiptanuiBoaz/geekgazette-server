@@ -24,6 +24,7 @@ const userSchema = new Schema ({
 
     },
     refreshToken: [String],//not required
+    profileImage: String,//optional
 })
 
 module.exports = mongoose.model("User", userSchema);
