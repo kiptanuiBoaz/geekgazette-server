@@ -45,9 +45,9 @@ app.use("/subdir", express.static(path.join(__dirname,'/public')));
 //routes
 // app.use("/",require("./routes/root.js"));
 app.use("/register",require("./routes/register.js"));
-// app.use("/auth",require("./routes/auth.js"));
+app.use("/login",require("./routes/login.js"));
 // app.use("/refresh",require("./routes/refresh.js"));
-// app.use("/logout",require("./routes/logout.js"));
+// app.use("/logout",require("./routes/logout.js"));b
 
 //protected routes
 // app.use(verifyJWT);
