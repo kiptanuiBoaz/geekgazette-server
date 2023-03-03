@@ -1,19 +1,19 @@
-const Post = require("../model/Post"); //Post model
+const Posts = require("../model/Posts"); //Post model
 
 const updateReactions = async (req, res) => {
     //check if id is provided
-    if (!req?.body?.id) return res.status(400).json({ "message": "id paramater is required" });
+    if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
 
-    const { reaction, userId, id } = req.body;
+    const { reaction, userId, postId } = req.body;
 
     //grab the post with the sent id from db
-    const post = await Post.findOne({ _id: id }).exec();
+    const post = await Posts.findOne({ _id: postId }).exec();
 
-    if (!post) return res.status(204).json({ "message": `No post matches ID ${id}` });
+    if (!post) return res.status(204).json({ "message": `No post matches ID ${postId}` });
 
     try {
 
-        if (post.reactions[reaction].some(reaction => reaction.userId === userId)) {
+        if (post.reactions[reaction].some(reaction => reaction === userId)) {
             //user already already reacted
             post.reactions[reaction] = post.reactions[reaction].filter(rId => rId !== userId)
         } else {
@@ -28,3 +28,5 @@ const updateReactions = async (req, res) => {
         console.error(err)
     }
 }
+
+module.exports = {updateReactions}
