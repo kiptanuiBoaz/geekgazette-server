@@ -34,7 +34,7 @@ const postSchema = new Schema({
         text: String,
     },],
     likes: [{
-        userId: Number,
+        userId: String,
         date: String
     }]
 
