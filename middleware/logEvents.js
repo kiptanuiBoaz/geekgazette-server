@@ -1,37 +1,44 @@
-//third party modules
-const { format } = require('date-fns');
-const { v4: uuid } = require('uuid');
+const RequestLog = require('../model/RequestLogs');
 
-//node core modules
-const fs = require('fs');
-const fsPromises = require('fs').promises;
-const path = require('path');
+const logEvents = async (req, res, next) => {
+    //credentials from req
+    const { url, ip, method } = req
+    const start = Date.now();
 
-const logEvents = async (message, logName) => {
-    //create timestamp
-    const dateTime = `${format(new Date(), 'yyyyMMdd\tHH:mm:ss')}`;
-    //create log with timestamp
-    const logItem = `${dateTime}\t${uuid()}\t${message}\n`;
+    //event listener
+    res.on('finish', async () => {
+        const responseTime = Date.now() - start;
+        const { statusCode } = res;
+        const { 'user-agent': userAgent } = req.headers;
 
-    try {
-        //check if dir exists and create otherwise append
-        if (!fs.existsSync(path.join(__dirname, "..", 'logs'))) {
-            await fsPromises.mkdir(path.join(__dirname,"..", 'logs'));
+        //create new req log
+        const requestLog = new RequestLog({
+            method,
+            url,
+            status: statusCode,
+            responseTime,
+            ipAddress: ip,
+            userAgent,
+        });
+
+        try {
+            await requestLog.save();
+        } catch (err) {
+            console.error(err);
         }
+    });
 
-        //append if exists otherwise perform a write operation
-        await fsPromises.appendFile(path.join(__dirname, "..",'logs', logName), logItem);
-    } catch (err) {
-        console.log(err);
-    }
+    next();
 }
 
-const logger = (req,res,next)=>{
+
+//log in the terminal
+const logger = (req, res, next) => {
     console.log(`${req.path} ${req.method}`)
 
-    logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, "reqLog.txt")
+
     //move on to the other route handlers
     next();
 }
 
-module.exports = { logger,logEvents};
+module.exports = { logger, logEvents };

@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const mongoose = require('mongoose');
 const connectDB = require("./config/dbCon");
-const {logger} = require("./middleware/logEvents");
+const {logger,logEvents} = require("./middleware/logEvents");
 const credentials = require("./middleware/credentials");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
@@ -18,7 +18,7 @@ connectDB();
 
 //custom middlewareLogger
 app.use(logger);
-
+app.use(logEvents);
 
 // //handle the credentials check before cors
 app.use(credentials); 
@@ -77,7 +77,7 @@ app.all("*", (req, res) => {
 
 //provisions for any uncaught errors
 // custom middleware to catch, log and  save errors
-// app.use(errorHandler)
+app.use(errorHandler)
 
 //listen to mongoose connected  event
 mongoose.connection.once("open", () => {
