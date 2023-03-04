@@ -2,30 +2,29 @@ require("dotenv").config(); //to be available in all files
 const express = require('express');
 const app = express();
 const path = require('path');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const mongoose = require('mongoose');
 const connectDB = require("./config/dbCon");
-// const {logger} = require("./middleware/logEvents");
-// const credentials = require("./middleware/credentials");
-// const errorHandler = require("./middleware/errorHandler");
-// const corsOptions = require("./config/corsOptions");
-// const verifyJWT = require("./middleware/verifyJWT");
+const {logger} = require("./middleware/logEvents");
+const credentials = require("./middleware/credentials");
+const errorHandler = require("./middleware/errorHandler");
+const corsOptions = require("./config/corsOptions");
+const verifyJWT = require("./middleware/verifyJWT");
 const PORT = process.env.PORT || 3500;
 
-//connect to mongoDB server
+//connect to mongoDB servers
 connectDB();
 
 //custom middlewareLogger
-// app.use(logger);
+app.use(logger);
 
 
 // //handle the credentials check before cors
-// app.use(credentials); 
+app.use(credentials); 
 
 //domains allowed to ping the server
-app.use(cors());
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // middleware function provided by the Express.js to handle formdata
 app.use(express.urlencoded({ extended: false }))
@@ -34,7 +33,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
 //middlware for cookies
-// app.use(cookieParser());
+app.use(cookieParser());
 
 //middleware function provided by the Express.js framework that is used to serve static files from a specific folder
 app.use("/", express.static(path.join(__dirname, '/public')));
@@ -51,7 +50,7 @@ app.use("/logout", require("./routes/logout.js"));
 
 
 //protected routes
-// app.use(verifyJWT);
+app.use(verifyJWT);
 app.use("/posts", require("./routes/api/posts.js"));
 app.use("/likes", require("./routes/api/likes.js"));
 app.use("/comments", require("./routes/api/comments.js"))

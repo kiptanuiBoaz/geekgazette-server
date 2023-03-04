@@ -4,7 +4,6 @@ const handleLogout = async (req, res) => {
     //on client side also delete the access token
     //destructure cookies
     const cookies = req.cookies;
-    const { userId } = req.body
 
     //check for cookies and jwt property
     if (!cookies?.jwt) return res.status(204).json({ "message": "The cookie not found" });
@@ -12,7 +11,7 @@ const handleLogout = async (req, res) => {
     const refreshToken = cookies.jwt;
     try {
         //try to find refresh token in db
-        const foundUser = await User.findOne({_id: userId }).exec(); //keys and values are the same
+        const foundUser = await User.findOne({ refreshToken }).exec(); //keys and values are the same
         console.log({foundUser})
 
         //erase cookie if user is not found
