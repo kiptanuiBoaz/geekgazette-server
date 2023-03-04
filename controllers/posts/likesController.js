@@ -1,4 +1,4 @@
-const Post = require("../model/Posts"); //Post model
+const Post = require("../../model/Posts"); //Post model
 
 const updateLikes = async (req, res) => {
     //check if id is provided

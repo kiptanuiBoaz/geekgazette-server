@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createNewComment, deleteComment } = require("../../controllers/commentsController");
+const { createNewComment, deleteComment } = require("../../controllers/posts/commentsController");
 
 router.route("/")
     //new comments

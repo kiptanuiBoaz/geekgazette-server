@@ -1,5 +1,5 @@
-const User = require("../model/Users"); //employee model
-const ROLES_LIST = require("../config/roles");
+const User = require("../../model/Users"); //employee model
+const ROLES_LIST = require("../../config/roles");
 const bcrypt = require("bcrypt");
 
 

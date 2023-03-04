@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const ROLES_LIST = require("../../config/roles");
 const verifyRoles = require("../../middleware/verifyRoles");
-const {handleNewUser} = require("../../controllers/registerController");
-const { getUser, deleteUser, getUsers, updateUser} = require("../../controllers/usersController");
+const {handleNewUser} = require("../../controllers/auth/registerController");
+const { getUser, deleteUser, getUsers, updateUser} = require("../../controllers/users/usersController");
 
 router.route("/")
     //get employees

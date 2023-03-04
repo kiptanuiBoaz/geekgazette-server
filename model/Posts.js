@@ -13,12 +13,19 @@ const postSchema = new Schema({
         required: true,
 
     },
+    category: {
+        required: true,
+        type: String,
+    },
     body: {
         type: String,
         required: true,
 
     },
-    userId: Number,
+    userId: {
+        type: String,
+        required: true,
+    },
     date: String,
     reactions: {
         thumbsUp: [], //array of uids

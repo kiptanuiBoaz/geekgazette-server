@@ -1,8 +1,7 @@
-const User = require("../model/Users");// user schema
+const User = require("../../model/Users");// user schema
 const jwt = require("jsonwebtoken");
 
 const handleRefreshToken = async (req, res) => {
-    //tap into cookies
     const cookies = req?.cookies;
     console.log(req?.cookies)
     //check for cookies and jwt property
@@ -11,26 +10,24 @@ const handleRefreshToken = async (req, res) => {
     //access refresh token
     const refreshToken = cookies.jwt;
 
-    res.clearCookie("jwt", {httpOnly:true, sameSite:"Lax", maxAge: 24 * 60 * 60 * 1000}) //secureSite: true//delete the cookie
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true//delete the cookie
 
     //query the presensce of user with refresh token in db
-
     const foundUser = await User.findOne({ refreshToken }).exec(); //keys and values are the same
-    //exit if user is not found
 
+    //exit if user is not found
     if (!foundUser) {//detected re-used refresh token
         jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
             async (err, decoded) => {
                 if (err) return res.status(403).json({ "message": err.message });
-                const hackedUser = await User.findOne({ username: decoded.username }).exec();
+                const hackedUser = await User.findOne({ username: decoded.email }).exec();
 
                 //empty the refreshTokens array
                 hackedUser.refreshToken = [];
                 const result = hackedUser.save();
             }
-
         )
         return res.status(403).json({ "message": "Forbidden!" });
     }
@@ -48,8 +45,8 @@ const handleRefreshToken = async (req, res) => {
                 const result = await foundUser.save();
             }
             //id recieved name is !== name in DB
-            if (err || decoded.username !== foundUser.username) 
-             return res.status(403).json({ "message": `${err.message}` });
+            if (err || decoded.email !== foundUser.email)
+                return res.status(403).json({ "message": `${err.message}` });
 
             //refresh Token still valid
             //roles of user from DB
@@ -58,7 +55,7 @@ const handleRefreshToken = async (req, res) => {
             const accessToken = jwt.sign(
                 {
                     "UserInfo": {
-                        "username": decoded.username,
+                        "username": decoded.email,
                         "roles": roles,
                     }
                 },
@@ -68,7 +65,7 @@ const handleRefreshToken = async (req, res) => {
 
             //create NewRefresh token
             const newRefreshToken = jwt.sign(
-                { "username": foundUser.username },
+                { "username": foundUser.email },
                 process.env.REFRESH_TOKEN_SECRET,
                 { expiresIn: "2d" }
             )
@@ -76,13 +73,13 @@ const handleRefreshToken = async (req, res) => {
             //saving refresh token with found user
             foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
             const result = await foundUser.save();
-           
+
 
             return res
-                .cookie("jwt", newRefreshToken, {httpOnly:true, sameSite:"Lax", maxAge: 24 * 60 * 60 * 1000}) //secureSite: true
+                .cookie("jwt", newRefreshToken, { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true
                 .status(200)
                 .json({ "message": `User ${foundUser.username} is logged in!`, accessToken, roles })
-            ;
+                ;
         }
     )
 

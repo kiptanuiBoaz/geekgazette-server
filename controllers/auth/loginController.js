@@ -1,4 +1,4 @@
-const User = require("../model/Users");// user schema
+const User = require("../../model/Users");// user schema
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -46,12 +46,11 @@ const handleLogin = async (req, res) => {
         let newRefreshTokenArray =
             !cookies?.jwt
                 ? foundUser.refreshToken
-                : foundUser.refreshToken.filter(rt => rt !== cookies.jwt
-                )
+                : foundUser.refreshToken.filter(rt => rt !== cookies.jwt)
             ;
 
         if (cookies?.jwt) {
-            /* 
+            /*  
             Scenario  
                 1) User logs in but never uses RT and does not logout 
                 2) RT is stolen
@@ -78,7 +77,7 @@ const handleLogin = async (req, res) => {
             .cookie("jwt", newRefreshToken, { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true
             .status(200)
             .json({ "message": `User ${email} is logged in!`, roles, accessToken })
-            
+
     } else {
         return res.status(401).json({ "message": "Password is incorrect" });
     }

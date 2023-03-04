@@ -1,4 +1,4 @@
-const Post = require("../model/Posts"); //Post model
+const Post = require("../../model/Posts"); //Post model
 
 
 const getPosts = async (req, res) => {
@@ -15,8 +15,8 @@ const getPosts = async (req, res) => {
 
 const createNewPost = async (req, res) => {
     //check for required fields
-    if (!req?.body?.body || !req?.body?.title) {
-        return res.status(400).json({ "message": " Body and title are required" })
+    if (!req?.body?.body || !req?.body?.title || !req?.body?.category) {
+        return res.status(400).json({ "message": " Body and title and category are required" })
     }
     //check for missing image URL
     if (!req.body?.imgUrl) {
@@ -24,7 +24,7 @@ const createNewPost = async (req, res) => {
     }
 
     try {
-        const { body, imgUrl, title, userId, date } = req.body;
+        const { body, imgUrl, title, userId, date,category, } = req.body;
 
         //create a new post record
         const result = await Post.create({
@@ -32,7 +32,9 @@ const createNewPost = async (req, res) => {
             body,
             imgUrl,
             userId,
-            date
+            date,
+            category,
+            userId
         })
         return res.status(201).json(result);
 
@@ -47,7 +49,7 @@ const updatePost = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ "message": "id paramater is required" });
 
     //destrucure the data object
-    const { body, imgUrl, title, userId, date, id } = req.body;
+    const { body, imgUrl, title,  id, category} = req.body;
     //grab the post with the sent id from db
     const post = await Post.findOne({ _id: id }).exec();
 
@@ -58,6 +60,7 @@ const updatePost = async (req, res) => {
     if (body) post.body = body;
     if (imgUrl) post.imgUrl = imgUrl;
     if (title) post.title = title;
+    if (category) post.category = category;
 
     //add updated post to db
     const result = await post.save();

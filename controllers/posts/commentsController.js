@@ -1,4 +1,4 @@
-const Posts = require("../model/Posts"); //Post model
+const Posts = require("../../model/Posts"); //Post model
 const mongoose = require("mongoose")
 
 const createNewComment = async (req, res) => {
