@@ -2,7 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema ({
-    username:{
+    fname:{
+        type: String,
+        required: true,
+    },
+    lname:{
+        type: String,
+        required: true,
+    },
+    headTag:{
         type: String,
         required: true,
     },
@@ -10,6 +18,12 @@ const userSchema = new Schema ({
         type: String,
         required: true,
     },
+    avatarUrl:String,
+    dob:{
+        type:String,
+        required: true,
+    },
+    gender:String,
     roles:{
         User:{
             type: Number,

@@ -2,6 +2,38 @@ const User = require("../../model/Users"); //employee model
 const ROLES_LIST = require("../../config/roles");
 const bcrypt = require("bcrypt");
 
+const createNewUser = async (req, res) => {
+    //check for required fields
+    if (!req?.body?.fname || !req?.body?.lname || !req?.body?.headTag || !req?.body?.dob) {
+        return res.status(400).json({ "message": "First name, last name and date of birth are required" })
+    }
+
+    const foundUser = await User.findOne({ email }).exec();
+
+    if(foundUser) return res.status(409).json({"message": `User with email:${email} already exists`})
+
+    try {
+        const { email, pwd, newRoles, fname, lname, headTag, dob, gender, avatarUrl } = req.body;
+
+        //create a new post record
+        const result = await User.create({
+            email,
+            pwd,
+            newRoles,
+            fname,
+            lname,
+            headTag,
+            dob,
+            gender,
+            avatarUrl
+        })
+        return res.status(201).json(result);
+
+    } catch (error) {
+        console.error(error)
+    }
+
+}
 
 const getUsers = async (req, res) => {
     const users = await User.find();//returns all the users
@@ -21,7 +53,7 @@ const updateUser = async (req, res) => {
     if (!req?.body?.email) return res.status(400).json({ "message": "email paramater is required" });
 
     //destrucure the data object
-    const { email, pwd, newRoles } = req.body;
+    const { email, pwd, newRoles, fname, lname, headTag, dob, gender, avatarUrl } = req.body;
 
     //grab the employee with the sent id from db
     const foundUser = await User.findOne({ email }).exec();
@@ -49,6 +81,13 @@ const updateUser = async (req, res) => {
             return res.status(500).json({ "message": err.message });
         }
     }
+
+    if (headTag) foundUser.headTag = headTag;
+    if (lname) foundUser.lname = lname;
+    if (fname) foundUser.fname = fname;
+    if (dob) foundUser.dob = dob;
+    if (gender) foundUser.gender = gender;
+    if (avatarUrl) foundUser.avatarUrl = avatarUrl;
 
     //add updated user to db
     const result = await foundUser.save();
@@ -91,4 +130,5 @@ module.exports = {
     deleteUser,
     getUsers,
     updateUser,
+    createNewUser,
 }

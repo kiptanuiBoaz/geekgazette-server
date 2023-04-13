@@ -5,7 +5,7 @@ const User = require("../../model/Users");// user schema
 const handleNewUser = async (req, res) => {
 
     //destructure body params
-    const { username, pwd, email, profileImage } = req.body;
+    const { pwd, email } = req.body;
 
     //handle bad request
     if (!pwd || !email) res.status(400).json({ "message": "Email and password are required" });
@@ -21,9 +21,7 @@ const handleNewUser = async (req, res) => {
 
         //create and store (this also calls .save()) new user
         const newUser = await User.create({
-            username,
             "password": hashedPWD,
-            profileImage,
             email
         });
 
