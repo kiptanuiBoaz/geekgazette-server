@@ -5,10 +5,10 @@ const User = require("../../model/Users");// user schema
 const handleNewUser = async (req, res) => {
 
     //destructure body params
-    const { pwd, email } = req.body;
+    const { password:pwd, email } = req.body;
 
     //handle bad request
-    if (!pwd || !email) res.status(400).json({ "message": "Email and password are required" });
+    if (!pwd || !email) return res.status(400).json({ "message": "Email and password are required" });
 
     //check for duplicate usernames in db
     const duplicate = await User.findOne({ email }).exec(); //exec is necessary bcoz its a mongoose method used with await without a callback

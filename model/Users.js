@@ -4,15 +4,15 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema ({
     fname:{
         type: String,
-        required: true,
+       
     },
     lname:{
         type: String,
-        required: true,
+       
     },
     headTag:{
         type: String,
-        required: true,
+     
     },
     email:{
         type: String,
@@ -21,7 +21,7 @@ const userSchema = new Schema ({
     avatarUrl:String,
     dob:{
         type:String,
-        required: true,
+      
     },
     gender:String,
     roles:{

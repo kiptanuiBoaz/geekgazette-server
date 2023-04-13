@@ -1,7 +1,8 @@
-
 {
   "dependencies": {
     "-": "^0.0.1",
+    "@reduxjs/toolkit": "^1.9.3",
+    "@types/redux": "^3.6.0",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -12,12 +13,11 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.4",
     "nodemon": "^2.0.20",
+    "react-redux": "^8.0.5",
     "uuid": "^9.0.0"
   },
-
-
- "name": "geekgazette-server",
- "description": "Server side for the geek gazzete blog site",
+  "name": "geekgazette-server",
+  "description": "Server side for the geek gazzete blog site",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
