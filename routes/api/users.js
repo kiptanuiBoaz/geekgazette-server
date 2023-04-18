@@ -7,19 +7,19 @@ const { getUser, deleteUser, getUsers, updateUser} = require("../../controllers/
 
 router.route("/")
     //get employees
-    .get( verifyRoles(ROLES_LIST.Admin), getUsers)
+    .get( verifyRoles(ROLES_LIST.User), getUsers)
 
    //update employee 
-    .put( verifyRoles(ROLES_LIST.Admin), updateUser)
+    .put( verifyRoles(ROLES_LIST.User), updateUser)
 
     //add employee
-    .post(verifyRoles(ROLES_LIST.Admin),handleNewUser)
+    .post(verifyRoles(ROLES_LIST.User),handleNewUser)
 
     //delete employee
-    .delete(verifyRoles(ROLES_LIST.Admin), deleteUser);
+    .delete(verifyRoles(ROLES_LIST.User), deleteUser);
 
 router.route("/:user")
-    .get( verifyRoles(ROLES_LIST.Admin),getUser);
+    .get( verifyRoles(ROLES_LIST.User),getUser);
 
 
 module.exports =  router;

@@ -50,6 +50,7 @@ const getUsers = async (req, res) => {
 const updateUser = async (req, res) => {
     if (req.body.email === "admin@gmail.com") return res.status(401).json({ "message": "Cannote edit Admin!" })
     //check if user is provided
+    console.log(req.body)
     if (!req?.body?.email) return res.status(400).json({ "message": "email paramater is required" });
 
     //destrucure the data object
