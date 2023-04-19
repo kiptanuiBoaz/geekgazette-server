@@ -22,7 +22,7 @@ const postSchema = new Schema({
         required: true,
 
     },
-    userId: {
+    email: {
         type: String,
         required: true,
     },

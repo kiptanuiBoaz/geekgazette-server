@@ -76,7 +76,7 @@ const handleLogin = async (req, res) => {
         return res
             .cookie("jwt", newRefreshToken, { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true
             .status(200)
-            .json({ "message": `User ${email} is logged in!`,...result })
+            .json({ "message": `User ${email} is logged in!`,...result,accessToken })
 
     } else {
         return res.status(401).json({ "message": "Password is incorrect" });

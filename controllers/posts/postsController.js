@@ -24,19 +24,18 @@ const createNewPost = async (req, res) => {
     }
 
     try {
-        const { body, imgUrl, title, userId, date,category, } = req.body;
+        const { body, imgUrl, title, email, date,category, } = req.body;
 
         //create a new post record
         const result = await Post.create({
             title,
             body,
             imgUrl,
-            userId,
             date,
             category,
-            userId
+            email
         })
-        return res.status(201).json(result);
+        return res.status(201).json({...result});
 
     } catch (error) {
         console.error(error)
