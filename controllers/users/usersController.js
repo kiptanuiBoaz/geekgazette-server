@@ -116,12 +116,12 @@ const deleteUser = async (req, res) => {
 
 const getUser = async (req, res) => {
 
-    if (!req?.params?.userId) return res.status(400).json({ "message": "userId paramater is required" });
+    if (!req?.params?.email) return res.status(400).json({ "message": "Email paramater is required" });
 
     //find the employee with id
-    const foundUser = await User.findOne({ _id: req.params.userId }).exec();//needs exec
+    const foundUser = await User.findOne({ email: req.params.email }).exec();//needs exec
     //send !found when employee  doen't exist
-    if (!foundUser) return res.status(204).json({ "message": `No user matches ID ${req.params.userId}` });
+    if (!foundUser) return res.status(204).json({ "message": `No user matches email ${req.params.email}` });
     return res.status(200).json(foundUser);
 }
 

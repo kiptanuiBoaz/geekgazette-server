@@ -72,11 +72,11 @@ const handleLogin = async (req, res) => {
         //saving refresh token with found user
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
         const result = await foundUser.save();
-        // console.log({ newRefreshToken })
+      
         return res
             .cookie("jwt", newRefreshToken, { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true
             .status(200)
-            .json({ "message": `User ${email} is logged in!`, roles, accessToken })
+            .json({ "message": `User ${email} is logged in!`,...result })
 
     } else {
         return res.status(401).json({ "message": "Password is incorrect" });
