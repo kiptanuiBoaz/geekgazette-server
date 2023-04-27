@@ -18,7 +18,7 @@ router.route("/")
     //delete employee
     .delete(verifyRoles(ROLES_LIST.User), deleteUser);
 
-router.route("/:user")
+router.route("/user")
     .get( verifyRoles(ROLES_LIST.User),getUser);
 
 

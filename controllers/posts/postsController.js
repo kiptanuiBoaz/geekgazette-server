@@ -9,6 +9,7 @@ const getPosts = async (req, res) => {
         return res.status(201).json({ "message": "No posts found!" });
     } else {
         //success operation
+        // console.log(posts);
         return res.status(200).json(posts);
     }
 }
@@ -24,7 +25,7 @@ const createNewPost = async (req, res) => {
     }
 
     try {
-        const { body, imgUrl, title, email, date,category, } = req.body;
+        const { body, imgUrl, title, authorEmail, date,category, } = req.body;
 
         //create a new post record
         const result = await Post.create({
@@ -33,7 +34,7 @@ const createNewPost = async (req, res) => {
             imgUrl,
             date,
             category,
-            email
+            authorEmail
         })
         return res.status(201).json({...result});
 

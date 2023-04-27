@@ -22,18 +22,11 @@ const postSchema = new Schema({
         required: true,
 
     },
-    email: {
+    authorEmail: {
         type: String,
         required: true,
     },
     date: String,
-    reactions: {
-        thumbsUp: [], //array of uids
-        wow: [],
-        heart: [],
-        rocket: [],
-        coffee: []
-    },
     comments: [{
         userId: String,
         date: String,

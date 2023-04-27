@@ -10,7 +10,7 @@ const createNewUser = async (req, res) => {
 
     const foundUser = await User.findOne({ email }).exec();
 
-    if(foundUser) return res.status(409).json({"message": `User with email:${email} already exists`})
+    if (foundUser) return res.status(409).json({ "message": `User with email:${email} already exists` })
 
     try {
         const { email, pwd, newRoles, fname, lname, headTag, dob, gender, avatarUrl } = req.body;
@@ -116,12 +116,13 @@ const deleteUser = async (req, res) => {
 
 const getUser = async (req, res) => {
 
-    if (!req?.params?.email) return res.status(400).json({ "message": "Email paramater is required" });
-
+    if (!req?.query?.email) return res.status(400).json({ "message": "Email paramater is required" });
+    console.log(req.query?.email)
     //find the employee with id
-    const foundUser = await User.findOne({ email: req.params.email }).exec();//needs exec
+    const foundUser = await User.findOne({ email: req.query.email }).lean().exec();
+
     //send !found when employee  doen't exist
-    if (!foundUser) return res.status(204).json({ "message": `No user matches email ${req.params.email}` });
+    if (!foundUser) return res.status(204).json({ "message": `No user matches email ${req.query.email}` });
     return res.status(200).json(foundUser);
 }
 
