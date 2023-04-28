@@ -46,15 +46,15 @@ const createNewPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     //check if id is provided
-    if (!req?.body?.id) return res.status(400).json({ "message": "id paramater is required" });
-
+    if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
+console.log("updating post...")
     //destrucure the data object
-    const { body, imgUrl, title,  id, category} = req.body;
+    const { body, imgUrl, title,  postId, category} = req.body;
     //grab the post with the sent id from db
-    const post = await Post.findOne({ _id: id }).exec();
+    const post = await Post.findOne({ _id: postId }).exec();
 
     //send !found when post  doen't exist
-    if (!post) return res.status(204).json({ "message": `No post matches ID ${id}` });
+    if (!post) return res.status(204).json({ "message": `No post matches ID ${postId}` });
 
     //hydrate the post variable with recieved data
     if (body) post.body = body;

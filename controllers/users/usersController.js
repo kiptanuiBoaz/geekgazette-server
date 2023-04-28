@@ -115,9 +115,8 @@ const deleteUser = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-
     if (!req?.query?.email) return res.status(400).json({ "message": "Email paramater is required" });
-    console.log(req.query?.email)
+    
     //find the employee with id
     const foundUser = await User.findOne({ email: req.query.email }).lean().exec();
 
