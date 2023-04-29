@@ -10,7 +10,6 @@ const {logger,logEvents} = require("./middleware/logEvents");
 const credentials = require("./middleware/credentials");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
-const verifyJWT = require("./middleware/verifyJWT");
 const PORT = process.env.PORT || 3500;
 
 //connect to mongoDB servers
@@ -40,16 +39,13 @@ app.use("/", express.static(path.join(__dirname, '/public')));
 //pass static files from the subdir
 app.use("/subdir", express.static(path.join(__dirname, '/public')));
 
-
 //routes
 app.use("/register", require("./routes/register.js"));
 app.use("/login", require("./routes/login.js"));
 app.use("/logout", require("./routes/logout.js"));
 app.use("/refresh",require("./routes/refresh.js"));
 
-
 //protected routes
-app.use(verifyJWT);
 app.use("/posts", require("./routes/api/posts.js"));
 app.use("/likes", require("./routes/api/likes.js"));
 app.use("/comments", require("./routes/api/comments.js"))

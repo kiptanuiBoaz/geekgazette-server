@@ -4,19 +4,20 @@ const ROLES_LIST = require("../../config/roles");
 const verifyRoles = require("../../middleware/verifyRoles");
 const {handleNewUser} = require("../../controllers/auth/registerController");
 const { getUser, deleteUser, getUsers, updateUser} = require("../../controllers/users/usersController");
+const verifyJWT= require("../../middleware/verifyJWT");
 
 router.route("/")
     //get employees
-    .get( verifyRoles(ROLES_LIST.User), getUsers)
+    .get( getUsers)
 
    //update employee 
-    .put( verifyRoles(ROLES_LIST.User), updateUser)
+    .put(verifyJWT, verifyRoles(ROLES_LIST.User), updateUser)
 
     //add employee
-    .post(verifyRoles(ROLES_LIST.User),handleNewUser)
+    .post(verifyJWT,verifyRoles(ROLES_LIST.User),handleNewUser)
 
     //delete employee
-    .delete(verifyRoles(ROLES_LIST.User), deleteUser);
+    .delete(verifyJWT,verifyRoles(ROLES_LIST.User), deleteUser);
 
 router.route("/user")
     .get( verifyRoles(ROLES_LIST.User),getUser);
