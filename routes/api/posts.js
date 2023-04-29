@@ -8,7 +8,7 @@ const verifyJWT = require("../../middleware/verifyJWT");
 const { getPosts, deletePost, getPost, updatePost, createNewPost } = postsController;
 
 router.route("/")
-    .get( verifyRoles(ROLES_LIST.User), getPosts)
+    .get( getPosts)
     .post( verifyRoles(ROLES_LIST.User), verifyJWT,createNewPost)
     .delete( verifyRoles(ROLES_LIST.User), verifyJWT, deletePost)
     .put( verifyRoles(ROLES_LIST.User), verifyJWT, updatePost);

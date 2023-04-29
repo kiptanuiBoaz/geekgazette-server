@@ -20,7 +20,7 @@ router.route("/")
     .delete(verifyJWT,verifyRoles(ROLES_LIST.User), deleteUser);
 
 router.route("/user")
-    .get( verifyRoles(ROLES_LIST.User),getUser);
+    .get(getUser);
 
 
 module.exports =  router;
