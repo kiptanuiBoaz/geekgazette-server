@@ -12,7 +12,6 @@ const handleLogout = async (req, res) => {
     try {
         //try to find refresh token in db
         const foundUser = await User.findOne({ refreshToken }).exec(); //keys and values are the same
-        console.log({foundUser})
 
         //erase cookie if user is not found
         if (!foundUser) {
@@ -27,7 +26,6 @@ const handleLogout = async (req, res) => {
             //save the changes to db
             const result = await foundUser.save();
 
-            console.log(result);
             //clear coockie
             res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true }); //secure:true only serves https
             return res.status(204).json({ "message": "Logged out successfully" });
