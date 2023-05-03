@@ -5,7 +5,7 @@ const createNewComment = async (req, res) => {
     //check if id is provided
     if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
 
-    const { userId, date, text, postId } = req.body;
+    const { userEmail, date, text, postId } = req.body;
     //grab the post with the sent id from db
     const post = await Posts.findOne({ _id: postId }).exec();
 
@@ -16,7 +16,7 @@ const createNewComment = async (req, res) => {
         post.comments = [
             ...post.comments,
             {
-                userId,
+                userEmail,
                 date,
                 text
             }

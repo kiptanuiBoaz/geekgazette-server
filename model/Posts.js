@@ -28,7 +28,7 @@ const postSchema = new Schema({
     },
     date: String,
     comments: [{
-        userId: String,
+        userEmail: String,
         date: String,
         text: String,
     },],
