@@ -25,7 +25,7 @@ const createNewComment = async (req, res) => {
         //add updated post to db
         const result = await post.save();
         //send a success response
-        return res.status(200).json(result);
+        return res.status(200).json( { userEmail, date, text, postId });
 
     } catch (err) {
         console.log(err);
