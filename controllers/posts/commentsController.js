@@ -32,10 +32,10 @@ const createNewComment = async (req, res) => {
     }
 }
 
-const deleteComment = async (req, res) => {
-    //check if id is provided
-    if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
+const deleteComment = async (req, res) => {    //check if id is provided
+    if (!req?.body?.postId) return res.status(400).json({ "message": "postId paramater is required" });
     const { postId, commentId } = req.body;
+    console.log({postId,commentId})
 
     try {
         //grab the post with the sent id from db
@@ -48,7 +48,7 @@ const deleteComment = async (req, res) => {
         post.comments = post.comments.filter(comment => comment._id.toString() !== commentId);
         const result = await post.save();
 
-        return res.status(200).json(result);
+        return res.status(200).json({postId, commentId });
     } catch (err) {
         console.error(err);
     }

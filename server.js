@@ -11,7 +11,7 @@ const credentials = require("./middleware/credentials");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const PORT = process.env.PORT || 3500;
-
+const verifyJWT = require("./middleware/verifyJWT");
 //connect to mongoDB servers
 connectDB();
 
@@ -47,10 +47,13 @@ app.use("/refresh",require("./routes/refresh.js"));
 
 //protected routes
 app.use("/posts", require("./routes/api/posts.js"));
-app.use("/likes", require("./routes/api/likes.js"));
-app.use("/comments", require("./routes/api/comments.js"))
 app.use("/reactions", require("./routes/api/reactions.js"));
 app.use("/users", require("./routes/api/users.js"));
+
+app.use(verifyJWT)
+//protected endpoints
+app.use("/likes", require("./routes/api/likes.js"));
+app.use("/comments", require("./routes/api/comments.js"))
 
 //applies to all http methods that  made it this far without bieng served
 app.all("*", (req, res) => {
