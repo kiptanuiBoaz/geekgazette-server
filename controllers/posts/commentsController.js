@@ -35,7 +35,6 @@ const createNewComment = async (req, res) => {
 const deleteComment = async (req, res) => {    //check if id is provided
     if (!req?.body?.postId) return res.status(400).json({ "message": "postId paramater is required" });
     const { postId, commentId } = req.body;
-    console.log({postId,commentId})
 
     try {
         //grab the post with the sent id from db
