@@ -76,10 +76,14 @@ const handleRefreshToken = async (req, res) => {
 
 
             return res
-                .cookie("jwt", newRefreshToken, { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true
+                .cookie("jwt", newRefreshToken, {
+                    httpOnly: true,
+                    sameSite: "None",
+                    maxAge: 24 * 60 * 60 * 1000,
+                    secureSite: true
+                })
                 .status(200)
-                .json({ "message": `User ${foundUser.username} is logged in!`, accessToken, roles })
-                ;
+                .json({ "message": `User ${foundUser.username} is logged in!`, accessToken, roles });
         }
     )
 
