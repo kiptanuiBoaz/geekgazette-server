@@ -11,7 +11,7 @@ const credentials = require("./middleware/credentials");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const PORT = process.env.PORT || 3500;
-const verifyJWT = require("./middleware/verifyJWT");
+const verifyJWT = require("./middleware/verifyJWT.js");
 //connect to mongoDB servers
 connectDB();
 
@@ -87,9 +87,3 @@ mongoose.connection.once("open", () => {
 
 
 
-
-//mongodb password
-// hTQz7N18FqGh7H4j
-
-// Admin
-// pATAg5W4qUtas7uX
