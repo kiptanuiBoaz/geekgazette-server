@@ -53,7 +53,7 @@ app.use("/users", require("./routes/api/users.js"));
 app.use(verifyJWT)
 //protected endpoints
 app.use("/likes", require("./routes/api/likes.js"));
-app.use("/comments", require("./routes/api/comments.js"))
+app.use("/comments", require("./routes/api/comments.js"));
 
 //applies to all http methods that  made it this far without bieng served
 app.all("*", (req, res) => {
