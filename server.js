@@ -10,7 +10,7 @@ const {logger,logEvents} = require("./middleware/logEvents");
 const credentials = require("./middleware/credentials");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
-const verifyJWT = require("./middleware/verifyJWT");
+const verifyJWT = require("../geekgazette-server/middleware/verifyJWT");
 const PORT = process.env.PORT || 3500;
 
 //connect to mongoDB servers
