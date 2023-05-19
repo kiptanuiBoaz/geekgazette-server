@@ -19,8 +19,7 @@ const verifyJWT = (req, res, next) => {
         req.roles = decoded.UserInfo.roles;
         //pass on control to the next controller || middleware
         next();
-    }
-    )
+    })
 }
 
 module.exports = verifyJWT;

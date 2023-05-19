@@ -7,10 +7,11 @@ const cors = require("cors");
 const mongoose = require('mongoose');
 const connectDB = require("./config/dbCon");
 const {logger,logEvents} = require("./middleware/logEvents");
+const verifyJWT = require("./middleware/verifyJWT");
 const credentials = require("./middleware/credentials");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
-const verifyJWT = require("./middleware/verifyJWT");
+
 const PORT = process.env.PORT || 3500;
 
 //connect to mongoDB servers
