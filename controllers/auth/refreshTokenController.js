@@ -83,7 +83,7 @@ const handleRefreshToken = async (req, res) => {
                     secureSite: true
                 })
                 .status(200)
-                .json({ "message": `User ${foundUser.username} is logged in!`, accessToken, roles });
+                .json({ "message": `User ${foundUser.username} is logged in!`, accessToken,foundUser });
         }
     )
 
