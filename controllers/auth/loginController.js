@@ -5,7 +5,6 @@ const cookieOptions = require("../../config/cookieOptions");
 
 const handleLogin = async (req, res) => {
     const cookies = req.cookies;
-    console.log({cookies})
 
     //destructure body params
     const { email, pwd } = req.body;

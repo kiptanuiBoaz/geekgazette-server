@@ -10,28 +10,37 @@ const handleRefreshToken = async (req, res) => {
 
     //access refresh token
     const refreshToken = cookies.jwt;
-
-    res.clearCookie("jwt", cookieOptions) //secureSite: true//delete the cookie
+    res.clearCookie("jwt", cookieOptions); //secureSite: true//delete the cookie
 
     //query the presensce of user with refresh token in db
     const foundUser = await User.findOne({ refreshToken }).exec(); //keys and values are the same
 
-    //exit if user is not found
-    if (!foundUser) {//detected re-used refresh token
+    // Exit if user is not found or detected re-used refresh token
+    if (!foundUser) {
         jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
             async (err, decoded) => {
-                if (err) return res.status(403).json({ "message": err.message });
-                const hackedUser = await User.findOne({ username: decoded.email }).exec();
+                if (err) {
+                    return res.status(403).json({ "message": err.message });
+                } else {
+                    try {
+                        const hackedUser = await User.findOne({ username: decoded.email }).exec();
 
-                //empty the refreshTokens array
-                hackedUser.refreshToken = [];
-                const result = hackedUser.save();
+                        // Empty the refreshTokens array
+                        hackedUser.refreshToken = [];
+                        const result = await hackedUser.save();
+
+                        return res.status(403).json({ "message": "Forbidden!" }, result);
+                    } catch (e) {
+                        // Handle any error that occurred during the database operation
+                        return res.status(500).json({ "message": "Internal Server Error" }, e.message);
+                    }
+                }
             }
-        )
-        return res.status(403).json({ "message": "Forbidden!" });
+        );
     }
+
 
     //remove used refreshtoken from db
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
