@@ -1,5 +1,5 @@
 const User = require("../../model/Users");// user schema
-import cookieOptions from "../../config/cookieOptions";
+const cookieOptions = require("../../config/cookieOptions");
 
 const handleLogout = async (req, res) => {
     //on client side also delete the access token

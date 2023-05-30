@@ -1,6 +1,6 @@
 const User = require("../../model/Users");// user schema
 const jwt = require("jsonwebtoken");
-import cookieOptions from "../../config/cookieOptions";
+const cookieOptions = require("../../config/cookieOptions");
 
 const handleRefreshToken = async (req, res) => {
     const cookies = req?.cookies;
