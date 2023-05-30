@@ -45,7 +45,7 @@ const handleLogin = async (req, res) => {
         let newRefreshTokenArray = !cookies?.jwt
             ? foundUser.refreshToken
             : foundUser.refreshToken.filter(rt => rt !== cookies.jwt)
-        ;
+            ;
 
         if (cookies?.jwt) {
             /*  
@@ -71,7 +71,7 @@ const handleLogin = async (req, res) => {
         const result = await foundUser.save();
 
         return res
-            .cookie("jwt", JSON.stringify(newRefreshToken), cookieOptions)
+            .cookie("jwt", newRefreshToken, cookieOptions)
             .status(200)
             .json({ "message": `User ${email} is logged in!`, ...result, accessToken })
 
