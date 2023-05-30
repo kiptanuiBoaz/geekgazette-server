@@ -41,7 +41,7 @@ const handleRefreshToken = async (req, res) => {
         );
     }
 
-
+console.log(foundUser)
     //remove used refreshtoken from db
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
 
