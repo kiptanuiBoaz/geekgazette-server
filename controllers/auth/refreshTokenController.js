@@ -80,10 +80,11 @@ const handleRefreshToken = async (req, res) => {
                     httpOnly: true,
                     sameSite: "lax",
                     maxAge: 24 * 60 * 60 * 1000,
-                    secureSite: true
+                    secure: true
                 })
+
                 .status(200)
-                .json({ "message": `User ${foundUser.username} is logged in!`, accessToken,foundUser });
+                .json({ "message": `User ${foundUser.username} is logged in!`, accessToken, foundUser });
         }
     )
 
