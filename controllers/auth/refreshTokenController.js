@@ -13,7 +13,7 @@ const handleRefreshToken = async (req, res) => {
     res.clearCookie("jwt", cookieOptions); //secureSite: true//delete the cookie
 
     //query the presensce of user with refresh token in db
-    const foundUser = await User.findOne({ refreshToken }).exec(); //keys and values are the same
+    const foundUser = await User.findOne({ refreshToken: { $in: [refreshToken] } }).exec();
 
     // Exit if user is not found or detected re-used refresh token
     if (!foundUser) {
