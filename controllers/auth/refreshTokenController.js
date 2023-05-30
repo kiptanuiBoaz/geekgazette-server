@@ -4,7 +4,6 @@ const cookieOptions = require("../../config/cookieOptions");
 
 const handleRefreshToken = async (req, res) => {
     const cookies = req?.cookies;
-    console.log(req?.cookies)
     //check for cookies and jwt property
     if (!cookies?.jwt) return res.status(401).json({ "message": "cookie not found" });
 
@@ -44,7 +43,6 @@ const handleRefreshToken = async (req, res) => {
         );
     }
 
-    console.log(foundUser)
     //remove used refreshtoken from db
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
 
