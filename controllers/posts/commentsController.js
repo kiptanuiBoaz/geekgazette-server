@@ -5,7 +5,7 @@ const createNewComment = async (req, res) => {
     //check if id is provided
     if (!req?.body?.postId) return res.status(400).json({ "message": "id paramater is required" });
 
-    const { userEmail, date, text, postId } = req.body;
+    const { postId, ...newComment } = req.body;
     //grab the post with the sent id from db
     const post = await Posts.findOne({ _id: postId }).exec();
 
@@ -13,19 +13,12 @@ const createNewComment = async (req, res) => {
 
     try {
         //spread the existing comment in the existing comments array
-        post.comments = [
-            ...post.comments,
-            {
-                userEmail,
-                date,
-                text
-            }
-        ];
+        post.comments = [...post.comments, newComment];
 
         //add updated post to db
         const result = await post.save();
         //send a success response
-        return res.status(200).json( { userEmail, date, text, postId });
+        return res.status(200).json({ ...newComment, postId });
 
     } catch (err) {
         console.log(err);
@@ -47,7 +40,7 @@ const deleteComment = async (req, res) => {    //check if id is provided
         post.comments = post.comments.filter(comment => comment._id.toString() !== commentId);
         const result = await post.save();
 
-        return res.status(200).json({postId, commentId });
+        return res.status(200).json({ postId, commentId });
     } catch (err) {
         console.error(err);
     }
