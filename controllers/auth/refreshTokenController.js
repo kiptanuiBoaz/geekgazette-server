@@ -1,5 +1,6 @@
 const User = require("../../model/Users");// user schema
 const jwt = require("jsonwebtoken");
+import cookieOptions from "../../config/cookieOptions";
 
 const handleRefreshToken = async (req, res) => {
     const cookies = req?.cookies;
@@ -10,7 +11,7 @@ const handleRefreshToken = async (req, res) => {
     //access refresh token
     const refreshToken = cookies.jwt;
 
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true//delete the cookie
+    res.clearCookie("jwt", cookieOptions) //secureSite: true//delete the cookie
 
     //query the presensce of user with refresh token in db
     const foundUser = await User.findOne({ refreshToken }).exec(); //keys and values are the same
@@ -76,13 +77,7 @@ const handleRefreshToken = async (req, res) => {
 
 
             return res
-            .cookie("jwt", JSON.stringify(newRefreshToken), {
-                httpOnly: true,
-                sameSite: "none",
-                maxAge: 24 * 60 * 60 * 1000,
-                secure: true
-            })
-
+                .cookie("jwt", JSON.stringify(newRefreshToken), cookieOptions)
                 .status(200)
                 .json({ "message": `User ${foundUser.username} is logged in!`, accessToken, foundUser });
         }

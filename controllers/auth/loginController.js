@@ -1,10 +1,11 @@
 const User = require("../../model/Users");// user schema
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const cookieOptions = require("../../config/cookieOptions");
 
 const handleLogin = async (req, res) => {
     const cookies = req.cookies;
-    // console.log({cookies})
+    console.log({cookies})
 
     //destructure body params
     const { email, pwd } = req.body;
@@ -66,7 +67,7 @@ const handleLogin = async (req, res) => {
                 newRefreshTokenArray = [];
             }
 
-            res.clearCookie('jwt', { httpOnly: true, sameSite: "Lax", maxAge: 24 * 60 * 60 * 1000 }) //secureSite: true
+            res.clearCookie('jwt', cookieOptions) //secureSite: true
         }
 
         //saving refresh token with found user
@@ -74,15 +75,10 @@ const handleLogin = async (req, res) => {
         const result = await foundUser.save();
 
         return res
-            .cookie("jwt", JSON.stringify(newRefreshToken), {
-                httpOnly: true,
-                sameSite: "none",
-                maxAge: 24 * 60 * 60 * 1000,
-                secure: true
-            })
-
+            .cookie("jwt", JSON.stringify(newRefreshToken), cookieOptions)
             .status(200)
             .json({ "message": `User ${email} is logged in!`, ...result, accessToken })
+            
 
     } else {
         return res.status(401).json({ "message": "Password is incorrect" });

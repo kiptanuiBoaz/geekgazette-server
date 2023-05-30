@@ -1,4 +1,5 @@
 const User = require("../../model/Users");// user schema
+import cookieOptions from "../../config/cookieOptions";
 
 const handleLogout = async (req, res) => {
     //on client side also delete the access token
@@ -17,7 +18,7 @@ const handleLogout = async (req, res) => {
         if (!foundUser) {
             //clear coockie
             console.log("not found")
-            res.clearCookie("jwt", { httpOnly: true, sameSite: "None", maxAge: 24 * 60 * 60 * 1000 });
+            res.clearCookie("jwt", cookieOptions);
             return res.status(204).json({ "message": "Deleted but not in db!" });
         } else {
             console.log(" found")
@@ -27,7 +28,7 @@ const handleLogout = async (req, res) => {
             const result = await foundUser.save();
 
             //clear coockie
-            res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true }); //secure:true only serves https
+            res.clearCookie("jwt", cookieOptions); //secure:true only serves https
             return res.status(204).json({ "message": "Logged out successfully" });
 
         }
