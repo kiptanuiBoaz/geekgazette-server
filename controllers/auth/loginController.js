@@ -31,14 +31,14 @@ const handleLogin = async (req, res) => {
                     "roles": roles,
                 }
             },
-            process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" }
+            process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" }
         )
 
         //create Refresh token
         const newRefreshToken = jwt.sign(
             { "email": foundUser.email },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: "3d" }
+            { expiresIn: "7d" }
         )
 
         //maintain the current rt in db if not in cookie

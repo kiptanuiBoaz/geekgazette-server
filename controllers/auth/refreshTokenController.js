@@ -78,7 +78,7 @@ const handleRefreshToken = async (req, res) => {
             const newRefreshToken = jwt.sign(
                 { "username": foundUser.email },
                 process.env.REFRESH_TOKEN_SECRET,
-                { expiresIn: "2d" }
+                { expiresIn: "7d" }
             )
 
             //saving refresh token with found user
