@@ -31,8 +31,7 @@ const handleLogin = async (req, res) => {
                     "roles": roles,
                 }
             },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "1m" }
+            process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" }
         )
 
         //create Refresh token
@@ -43,11 +42,10 @@ const handleLogin = async (req, res) => {
         )
 
         //maintain the current rt in db if not in cookie
-        let newRefreshTokenArray =
-            !cookies?.jwt
-                ? foundUser.refreshToken
-                : foundUser.refreshToken.filter(rt => rt !== cookies.jwt)
-            ;
+        let newRefreshTokenArray = !cookies?.jwt
+            ? foundUser.refreshToken
+            : foundUser.refreshToken.filter(rt => rt !== cookies.jwt)
+        ;
 
         if (cookies?.jwt) {
             /*  
@@ -57,8 +55,7 @@ const handleLogin = async (req, res) => {
                 3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
             */
             const refreshToken = cookies.jwt;
-            const foundToken = await User.findOne({ refreshToken }).exec();
-
+            const foundToken = await User.findOne({ refreshToken: { $in: [refreshToken] } }).exec();
             // Detected refresh token reuse!
             if (!foundToken) {
                 console.log('attempted refresh token reuse at login!')
@@ -66,7 +63,7 @@ const handleLogin = async (req, res) => {
                 newRefreshTokenArray = [];
             }
 
-            res.clearCookie('jwt', cookieOptions) //secureSite: true
+            res.clearCookie('jwt', cookieOptions); //secureSite: true
         }
 
         //saving refresh token with found user
@@ -77,7 +74,7 @@ const handleLogin = async (req, res) => {
             .cookie("jwt", JSON.stringify(newRefreshToken), cookieOptions)
             .status(200)
             .json({ "message": `User ${email} is logged in!`, ...result, accessToken })
-            
+
 
     } else {
         return res.status(401).json({ "message": "Password is incorrect" });

@@ -25,13 +25,16 @@ const handleRefreshToken = async (req, res) => {
                     return res.status(403).json({ "message": err.message });
                 } else {
                     try {
-                        const hackedUser = await User.findOne({ username: decoded.email }).exec();
+                        const hackedUser = await User.findOne({ email: decoded.email }).exec();
 
-                        // Empty the refreshTokens array
-                        hackedUser.refreshToken = [];
-                        const result = await hackedUser.save();
+                        if (hackedUser) {
+                            hackedUser.refreshToken = [];
+                            const result = await hackedUser.save();
 
-                        return res.status(403).json({ "message": "Forbidden!" }, result);
+                            return res.status(403).json({ "message": "Forbidden!" }, result);
+                        } else {
+                            return res.status(403).json({ "message": "User not found!" });
+                        }
                     } catch (e) {
                         // Handle any error that occurred during the database operation
                         return res.status(500).json({ "message": "Internal Server Error" }, e.message);
@@ -41,7 +44,7 @@ const handleRefreshToken = async (req, res) => {
         );
     }
 
-console.log(foundUser)
+    console.log(foundUser)
     //remove used refreshtoken from db
     const newRefreshTokenArray = foundUser.refreshToken.filter(rt => rt !== refreshToken);
 
